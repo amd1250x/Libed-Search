@@ -2,18 +2,43 @@ import yaml
 from lxml import html
 import requests
 
+
+
+cjson = open("courses.json")
+cyaml = yaml.load(cjson)
+
+class Course():
+    def __init__(self, course_id, subject, \
+                 catalog_number, title, diversified_core, \
+                 designated_theme, writing_intensive):
+        self.course_id = course_id
+        self.subject = subject
+        self.catalog_number = catalog_number
+        self.title = title
+        self.diversified_core = diversified_core
+        self.designated_theme = designated_theme
+        self.writing_intensive = writing_intensive
+
+coursesList = []
+for i in range(len(cyaml['courses'])):
+    coursesList.append(Course(cyaml['courses'][i]['course_id'], \
+                              cyaml['courses'][i]['subject'], \
+                              cyaml['courses'][i]['catalog_number'], \
+                              cyaml['courses'][i]['title'], \
+                              cyaml['courses'][i]['diversified_core'], \
+                              cyaml['courses'][i]['designated_theme'], \
+                              cyaml['courses'][i]['writing_intensive']))
+
+    
 def getSubjectsFromReq(link):
+
     courseTitle = html.fromstring(requests.get(link).text).xpath('//h3[@class="courseTitle"]/text()')
 
-    c = open("courses.json")
-    print 'Loading courses...'
-    cjson = yaml.load(c)
-    
     subjects = []
     def getSubjects():
-        for i in range(len(cjson['courses'])):
-            if cjson['courses'][i]['subject'] not in subjects:
-                subjects.append(cjson['courses'][i]['subject'])
+        for i in range(len(coursesList)):
+            if coursesList[i].subject not in subjects:
+                subjects.append(coursesList[i].subject)
 
     getSubjects()
     def getSubjectFromPage(n):
