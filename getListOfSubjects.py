@@ -29,7 +29,14 @@ for i in range(len(cyaml['courses'])):
                               cyaml['courses'][i]['designated_theme'], \
                               cyaml['courses'][i]['writing_intensive']))
 
+
+def test(l):
+
+    courseTitle = html.fromstring(requests.get(l).text).xpath('//h3[@class="courseTitle"]/text()')
+    subs = yaml.load(courseTitle[0])
+    print yaml.load(subs.split(' ')[0]) #THIS IS IT!!
     
+
 def getSubjectsFromReq(link):
 
     courseTitle = html.fromstring(requests.get(link).text).xpath('//h3[@class="courseTitle"]/text()')
