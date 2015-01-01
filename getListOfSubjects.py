@@ -71,6 +71,7 @@ def getSubjectCatalogList(core):
         if coursesList[i].diversified_core == core:
             lst.append([coursesList[i].subject, \
                         coursesList[i].catalog_number])
+    return lst
             
 def getCourseIndexFromSubjectAndNum(tup):
     sub = tup[0]
